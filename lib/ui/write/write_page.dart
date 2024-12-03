@@ -29,8 +29,31 @@ class _WritePageState extends State<WritePage> {
         FocusScope.of(context).unfocus();
       },
       child: Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            actions: [
+              GestureDetector(
+                onTap: (){
+                  print('완료 버튼 클릭'); // onTap 시에는 꼭 이런 형태의 출력문 넣기!
+                  final result = formKey.currentState?.validate() ?? false; // return이 불리언 타입 (모든 필드가 성공했을때)!
+                },
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  color: Colors.transparent,
+                  alignment: Alignment.center,
+                  child: Text(
+                    '완료',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
           body: Form(
+            key: formKey,
               child: ListView(
             padding: EdgeInsets.symmetric(horizontal: 20),
             children: [
