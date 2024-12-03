@@ -15,9 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.purple,
-          brightness: Brightness.light
-          ),
+            seedColor: Colors.purple, brightness: Brightness.light),
         appBarTheme: AppBarTheme(
           titleTextStyle: TextStyle(
             fontSize: 18,
@@ -26,9 +24,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-
       home: HomePage(),
     );
   }
 }
-
