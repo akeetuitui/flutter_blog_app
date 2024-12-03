@@ -8,7 +8,14 @@ class DetailPage extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
+        actions: [
+          iconButton(Icons.delete, (){
+            print('삭제 아이콘 클릭');
+          }),
+          iconButton(Icons.edit, (){
+            print('수정 아이콘 클릭');
+          }),
+        ],
       ),
       body: Text('DetailPage'),
     );
