@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_firebase_blog_app/ui/write/write_page.dart';
 
 class DetailPage extends StatelessWidget {
   @override
@@ -11,7 +12,10 @@ class DetailPage extends StatelessWidget {
               print('삭제 아이콘 클릭');
             }),
             iconButton(Icons.edit, () {
-              print('수정 아이콘 클릭');
+              Navigator.push(context, MaterialPageRoute(builder: (context){
+                return WritePage(); // 편집 버튼 클릭 시 writepage로 이동
+              }), 
+              );
             }),
           ],
         ),
