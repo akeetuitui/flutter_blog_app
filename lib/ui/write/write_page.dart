@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class WritePage extends StatefulWidget {
+  const WritePage({super.key});
+
   @override
   State<WritePage> createState() => _WritePageState();
 }
@@ -41,7 +43,7 @@ class _WritePageState extends State<WritePage> {
                   height: 50,
                   color: Colors.transparent,
                   alignment: Alignment.center,
-                  child: Text(
+                  child: const Text(
                     '완료',
                     style: TextStyle(
                       color: Colors.blue,
@@ -55,12 +57,12 @@ class _WritePageState extends State<WritePage> {
           body: Form(
             key: formKey,
               child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             children: [
               TextFormField(
                 controller: writeController,
                 textInputAction: TextInputAction.done,
-                decoration: InputDecoration(hintText: '작성자'),
+                decoration: const InputDecoration(hintText: '작성자'),
                 validator: (value) {
                   // trim: 문자열 앞 뒤로 공백 제거
                   if(value?.trim().isEmpty ?? true) { // Null 일 때에 true로 넣어 null 일 때에도 문구가 나오도록!
@@ -72,7 +74,7 @@ class _WritePageState extends State<WritePage> {
               TextFormField(
                 controller: titleController,
                 textInputAction: TextInputAction.done,
-                decoration: InputDecoration(hintText: '제목'),
+                decoration: const InputDecoration(hintText: '제목'),
                 validator: (value) {
                   // trim: 문자열 앞 뒤로 공백 제거
                   if(value?.trim().isEmpty ?? true) { // Null 일 때에 true로 넣어 null 일 때에도 문구가 나오도록!
@@ -88,7 +90,7 @@ class _WritePageState extends State<WritePage> {
                   maxLines: null, // 반드시 null로 할당 (개행할 때)
                   expands: true, // sizedbox로 height설정 후 꼭 expands, 크기 늘릴 시 필수임!
                   textInputAction: TextInputAction.newline, // 내용 입력 시 여러 줄 입력할 때 필요! (newline)
-                  decoration: InputDecoration(hintText: '내용'),
+                  decoration: const InputDecoration(hintText: '내용'),
                   validator: (value) {
                     // trim: 문자열 앞 뒤로 공백 제거
                     if(value?.trim().isEmpty ?? true) { // Null 일 때에 true로 넣어 null 일 때에도 문구가 나오도록!
@@ -98,14 +100,14 @@ class _WritePageState extends State<WritePage> {
                   },
                 ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
               Align(
                 alignment: Alignment.centerRight,
                 child: Container(
                   width: 100,
                   height: 100,
                   color: Colors.grey,
-                  child: Icon(Icons.image),
+                  child: const Icon(Icons.image),
                   ),
               ),
             ],

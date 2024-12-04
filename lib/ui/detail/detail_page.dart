@@ -3,6 +3,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_firebase_blog_app/ui/write/write_page.dart';
 
 class DetailPage extends StatelessWidget {
+  const DetailPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,41 +22,41 @@ class DetailPage extends StatelessWidget {
           ],
         ),
         body: ListView(
-          padding: EdgeInsets.only(bottom: 500),
+          padding: const EdgeInsets.only(bottom: 500),
           children: [
             Image.network(
               'https://picsum.photos/200/300',
               fit: BoxFit.cover,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Today I learned',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
-                  SizedBox(height: 14),
-                  Text(
+                  const SizedBox(height: 14),
+                  const Text(
                     '이지원',
                     style: TextStyle(fontSize: 16),
                   ),
-                  Text(
+                  const Text(
                     '2024.12.25 12:00',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w200,
                     ),
                   ),
-                  SizedBox(height: 14),
+                  const SizedBox(height: 14),
                   Text(
                     '플러터의 그리드뷰를 배웠습니다.' * 10,
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ), // 곱셉연산자 넣으면 글자 반복
                 ],
               ),

@@ -4,11 +4,13 @@ import 'package:flutter_firebase_blog_app/ui/detail/detail_page.dart';
 import 'package:flutter_firebase_blog_app/ui/write/write_page.dart';
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('BLOG'),
+        title: const Text('BLOG'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
@@ -17,7 +19,7 @@ class HomePage extends StatelessWidget {
           }),
           );
         },
-        child: Icon(Icons.edit),
+        child: const Icon(Icons.edit),
       ),
       backgroundColor: Colors.grey[200],
       body: Padding(
@@ -26,18 +28,18 @@ class HomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //
-            Text(
+            const Text(
               '최근글',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Expanded(
                 child: ListView.separated(
                     // llistview 를 반복해서 보여주는데 사이즈드 박스를 넣는 것과 같이 구성!
                     itemCount: 10,
-                    separatorBuilder: (context, index) => SizedBox(
+                    separatorBuilder: (context, index) => const SizedBox(
                           height: 10,
                         ),
                     itemBuilder: (context, index) {
@@ -58,7 +60,7 @@ class HomePage extends StatelessWidget {
             return DetailPage();
           }));
         },
-        child: Container(
+        child: SizedBox(
           width: double.infinity,
           height: 120,
           child: Stack(
@@ -83,9 +85,9 @@ class HomePage extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                margin: EdgeInsets.only(right: 100),
-                padding: EdgeInsets.all(20),
-                child: Column(
+                margin: const EdgeInsets.only(right: 100),
+                padding: const EdgeInsets.all(20),
+                child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
