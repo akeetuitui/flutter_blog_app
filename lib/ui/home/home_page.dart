@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_firebase_blog_app/data/model/post.dart';
 import 'package:flutter_firebase_blog_app/ui/detail/detail_page.dart';
+import 'package:flutter_firebase_blog_app/ui/home/home_view_model.dart';
 import 'package:flutter_firebase_blog_app/ui/write/write_page.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,10 +16,12 @@ class HomePage extends StatelessWidget {
         title: const Text('BLOG'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context){
-            return WritePage();
-          }),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) {
+              return WritePage();
+            }),
           );
         },
         child: const Icon(Icons.edit),
@@ -34,24 +39,32 @@ class HomePage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 20),
-            Expanded(
-                child: ListView.separated(
+            SizedBox(height: 20),
+            // Riverpod 사용해 최신 글 목록 표시
+            Consumer(
+              builder: (context, ref, child) {
+                final posts = ref.watch(HomeViewModelProvider);
+                // 홈뷰모델에서 가져온 게시글 데이터를 posts로 사용
+                return Expanded(
+                  child: ListView.separated(
                     // llistview 를 반복해서 보여주는데 사이즈드 박스를 넣는 것과 같이 구성!
-                    itemCount: 10,
-                    separatorBuilder: (context, index) => const SizedBox(
-                          height: 10,
-                        ),
-                    itemBuilder: (context, index) {
-                      return item(); // container를 Extract method하여 item으로 저장!
-                    }))
+                    itemCount: posts.length,
+                    separatorBuilder: (context, index) => const SizedBox(height: 10,),
+                    itemBuilder: (context, index) { // 리스트에서 하나의 아이템을 그리는 함수 (itemBuilder)
+                      final post = posts[index]; // posts에서 Index에 해당하는 데이터를 가져옴
+                      return item(post); // 게시글 데이터를 받아서 개별 게시글 위젯을 만들어 반환
+                    },
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget item() {
+  Widget item(Post post) {
     return Builder(builder: (context) {
       return GestureDetector(
         onTap: () {
@@ -73,7 +86,7 @@ class HomePage extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: Image.network(
-                    'https://picsum.photos/200/300',
+                  post.imageUrl,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -87,11 +100,11 @@ class HomePage extends StatelessWidget {
                 ),
                 margin: const EdgeInsets.only(right: 100),
                 padding: const EdgeInsets.all(20),
-                child: const Column(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Today I learned',
+                      post.title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 14,
@@ -99,12 +112,12 @@ class HomePage extends StatelessWidget {
                     ),
                     Spacer(),
                     Text(
-                      'Flutter 그리드뷰를 배웠습니다, Flutter 그리드뷰를 배웠습니다, Flutter 그리드뷰를 배웠습니다',
+                      post.content,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                     SizedBox(height: 4),
-                    Text('2024.12.25 12:00',
+                    Text(post.creatAt.toIso8601String(),
                         style: TextStyle(
                           color: Colors.grey,
                           fontSize: 12,
