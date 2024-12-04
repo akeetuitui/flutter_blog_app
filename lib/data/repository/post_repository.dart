@@ -53,7 +53,8 @@ class PostRepository {
         'title': title,
         'content': content,
         'writer': writer,
-        'imageUrl': imageUrl
+        'imageUrl': imageUrl,
+        'createdAt': DateTime.now().toIso8601String(),
       });
       return true; // 리턴타입에 bool, try문안에 잘 작동이 될 시 true
     } catch (e) {
