@@ -1,4 +1,6 @@
 // Firebase firestore에서 데이터를 가져와요
+// Firebase 데이터베이스에서 데이터를 추가/읽기/수정/삭제하는 작업을 해요
+// CRUD 작업을 통해 데이터를 관리해요
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_firebase_blog_app/data/model/post.dart';
