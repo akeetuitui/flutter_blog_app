@@ -93,6 +93,8 @@ class PostRepository {
     required String title,
     required String content,
     required String imageUrl,
+    // 수정할 데이터 값들(writer, title, content, imageUrl)
+    // bool - try catch 문으로 true/false 반환
   }) async {
     try {
       // 1) 파이어스토어 인스턴스 가져오기
@@ -118,5 +120,23 @@ class PostRepository {
       return false;
     }
   }
+
   // 4. Delete: 도큐먼트 삭제
+  Future<bool> delete(String id) async {
+    // 메서드 이름은 delete, 특정 Id값의 데이터를 지워야 하니 받아올 것!
+    try {
+      // 1) 파이어스토어 인스턴스 가져오기
+      final firestore = FirebaseFirestore.instance;
+      // 2) 컬렉션 참조 만들기
+      final collectionRef = firestore.collection('posts');
+      // 3) 문서 참조 만들기
+      final docRef = collectionRef.doc(id);
+      // 4) 삭제
+      await docRef.delete();
+      return true;
+    } catch (e) {
+      print(e);
+      return false; // Id에 해당하는 문서가 없어 삭제가 안 될 경우!
+    }
+  }
 }
