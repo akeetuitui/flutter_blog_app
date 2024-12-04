@@ -30,7 +30,7 @@ class PostRepository {
     }
   }
 
-  // 1. Creat: 데이터 쓰기
+  // 1. Create: 데이터 쓰기
   Future<bool> insert({
     required String title,
     required String content,
@@ -62,8 +62,61 @@ class PostRepository {
   }
 
   // 2. Read: 특정 ID로 하나의 도큐먼트 가져오기
+  Future<Post?> getOne(String id) async {
+    // 특정 id를 가진 하나의 문서(게시글)을 가져와서 반환하는 함수 "getOne"!
+    // 성공하면 Post 객체를 반환, 실패하면 Null 반환(?)
+    try {
+      // 1) 파이어스토어 인스턴스 가져오기
+      final firestore = FirebaseFirestore.instance;
+      // 2) 컬렉션 참조 만들기
+      final collectionRef = firestore.collection('posts');
+      // 3) 문서 참조 만들기
+      final docRef = collectionRef.doc(id); // 특정한 id를 받아야하니까!
+      // 4) 데이터 가져오기
+      final doc = await docRef.get();
+      return Post.fromJson({
+        'id': doc.id,
+        ...doc.data()!,
+        // 강제로 Null이 아니도록!
+        // 스프레드 연산자를 사용해서 doc.data() 내용을 map에 병합
+      });
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
   // 3. Update : 도큐먼트 수정
+  Future<bool> update({
+    required String id,
+    required String writer,
+    required String title,
+    required String content,
+    required String imageUrl,
+  }) async {
+    try {
+      // 1) 파이어스토어 인스턴스 가져오기
+      final firestore = FirebaseFirestore.instance;
+      // 2) 컬렉션 참조 만들기
+      final collectionRef = firestore.collection('posts');
+      // 3) 문서 참조 만들기
+      final docRef = collectionRef.doc(id);
 
+      // 4) 값 업데이트 해주기(set메소드=>update 메서드)
+      // 업데이트할 값 Map 형태로 넣어주기 : Id에 해당하는 문서가 없을 때 새로 생성
+      // docRef.set(data);
+      // 업데이트할 값 Map 형태로 넣어주기 : Id에 해당하는 문서가 없을 때 에러 발생
+      await docRef.update({
+        'writer': writer,
+        'title': title,
+        'content': content,
+        'imageUrl': imageUrl,
+      });
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
+  }
   // 4. Delete: 도큐먼트 삭제
 }
