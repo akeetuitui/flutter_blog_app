@@ -142,4 +142,29 @@ class PostRepository {
       return false; // Id에 해당하는 문서가 없어 삭제가 안 될 경우!
     }
   }
+
+  Stream<List<Post>> postListStream(){
+    // firestore의 컬렉션(Post)의 실시간 데이터를 가져오는 Stream<List> 반환!
+    // 실시간 업데이트를 위해 Firestore의 snapshot메서드 사용해서 참조
+    final firestore = FirebaseFirestore.instance;
+    final collectionRef = firestore.collection('post');
+    final stream = collectionRef.snapshots();
+    // Stram <- 실시간 데이터 스트림 생성, 추가/수정/삭제되면 즉시 업데이트된 데이터 제공!
+    final newStream = stream.map((event) {
+      // 스트림 데이터 변환
+      return event.docs.map((e){
+        return Post.fromJson({ // post객체로 변환
+          'id': e.id,
+          ...e.data(),
+        });
+      }).toList(); 
+    },
+    );
+
+    // 변환된 스트림 반환
+    return newStream;
+
+    // List<Post>
+  }
+
 }
