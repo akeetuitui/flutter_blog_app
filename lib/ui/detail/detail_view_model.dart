@@ -12,21 +12,34 @@ class DetailViewModel extends AutoDisposeFamilyNotifier<Post, Post> {
   // Post 상태를 관리하고 반환
   @override
   Post build(Post arg) {
-   return arg;
+    listenStream();
+    return arg;
   }
   // Family로 전달받은 인자를 초기 상태로 설정
 
-  Future<bool> deletePost() async{
+  final postRepository = PostRepository();
+
+  Future<bool> deletePost() async {
     // PostRepository 호출해서 Firestore에서 해당 게시글 삭제
-    final postRepository = PostRepository();
-    return postRepository.delete(arg.id); // 상세페이지 해당 포스트의 id
+    return await postRepository.delete(arg.id); // 상세페이지 해당 포스트의 id
   }
-} 
+
+  void listenStream() {
+    final stream = postRepository.postStream(arg.id);
+    final streamSub = stream.listen((data) {
+      if (data != null) {
+        state = data;
+      }
+    });
+    ref.onDispose(() {
+      streamSub.cancel();
+    });
+  }
+}
 
 // 3. 뷰모델 관리자 만들기
 
-final detailViewModelProvider = NotifierProvider.autoDispose.family<DetailViewModel, Post, Post>(
-  (){
-    return DetailViewModel(); // DetailViewModel 인스턴스 생성
-  }
-);
+final detailViewModelProvider =
+    NotifierProvider.autoDispose.family<DetailViewModel, Post, Post>(() {
+  return DetailViewModel(); // DetailViewModel 인스턴스 생성
+});

@@ -32,7 +32,7 @@ class HomeViewModel extends Notifier<List<Post>> { // state를 List<Post>로 관
     ref.onDispose((){
       // 구독하고 있는 Stream의 구독을 끊어줘야 메모리에서 안전하게 제거
       // 구독을 끊어주는 방법은 Stream listen할 때 리턴받는 StreamSubscription 클래스의
-      // cancel 메서드 호출
+      // cancel 메서드 호출!
       StreamSubscription.cancel(
       );
     });
