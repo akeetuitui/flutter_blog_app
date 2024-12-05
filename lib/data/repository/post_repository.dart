@@ -147,7 +147,7 @@ class PostRepository {
     // firestore의 컬렉션(Post)의 실시간 데이터를 가져오는 Stream<List> 반환!
     // 실시간 업데이트를 위해 Firestore의 snapshot메서드 사용해서 참조
     final firestore = FirebaseFirestore.instance;
-    final collectionRef = firestore.collection('posts');
+    final collectionRef = firestore.collection('posts').orderBy('createdAt',descending: true); // 내림차순 정렬
     final stream = collectionRef.snapshots();
     // Stram <- 실시간 데이터 스트림 생성, 추가/수정/삭제되면 즉시 업데이트된 데이터 제공!
     // 아래와는 달리 특정 도큐멘트가 아닌 컬렉션 전체에 대한 스트림을 생성
