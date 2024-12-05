@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) {
-              return WritePage();
+              return WritePage(null); // 새로 작성이니까 Null
             }),
           );
         },

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firebase_blog_app/data/model/post.dart';
+import 'package:flutter_firebase_blog_app/ui/write/write_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class WritePage extends ConsumerStatefulWidget {
-  const WritePage({super.key});
+  WritePage(this.post);
+
+  Post? post; // 새로 작성할 땐 Null로 넘어 옴
 
   @override
   ConsumerState<WritePage> createState() => _WritePageState();
@@ -26,6 +30,14 @@ class _WritePageState extends ConsumerState<WritePage> {
 
   @override
   Widget build(BuildContext context) {
+    final writeState = ref.watch(writeViewModelProvider(widget.post));
+    if (writeState.isWriting){
+      return Scaffold(
+        appBar:  AppBar(),
+        body: CircularProgressIndicator(),
+      );
+    }
+
     return GestureDetector(
       onTap: () {
         //
@@ -35,9 +47,20 @@ class _WritePageState extends ConsumerState<WritePage> {
           appBar: AppBar(
             actions: [
               GestureDetector(
-                onTap: (){
+                onTap: ()async{
                   print('완료 버튼 클릭'); // onTap 시에는 꼭 이런 형태의 출력문 넣기!
                   final result = formKey.currentState?.validate() ?? false; // return이 불리언 타입 (모든 필드가 성공했을때)!
+                  if (result){
+                    final vm = ref.read(writeViewModelProvider(widget.post).notifier);
+                    final insertResult = await vm.insert(
+                      writer: writeController.text,
+                      title: titleController.text,
+                      content: contentController.text,
+                      );
+                      if (insertResult){
+                        Navigator.pop(context);
+                      }
+                  }
                 },
                 child: Container(
                   width: 50,

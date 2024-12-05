@@ -28,7 +28,7 @@ class DetailPage extends ConsumerWidget {
             }),
             iconButton(Icons.edit, () {
               Navigator.push(context, MaterialPageRoute(builder: (context){
-                return WritePage(); // 편집 버튼 클릭 시 writepage로 이동
+                return WritePage(post); // 편집 버튼 클릭 시 writepage로 이동
               }), 
               );
             }),
