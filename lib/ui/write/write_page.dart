@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_firebase_blog_app/data/model/post.dart';
 import 'package:flutter_firebase_blog_app/ui/write/write_view_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 
 class WritePage extends ConsumerStatefulWidget {
   WritePage(this.post);
@@ -133,12 +134,23 @@ class _WritePageState extends ConsumerState<WritePage> {
               const SizedBox(height: 20,),
               Align(
                 alignment: Alignment.centerRight,
-                child: Container(
-                  width: 100,
-                  height: 100,
-                  color: Colors.grey,
-                  child: const Icon(Icons.image),
-                  ),
+                child: GestureDetector(
+                  onTap: () async{
+                    // 
+                    // 1. 이미지 피커 객체 생성
+                    ImagePicker imagePicker = ImagePicker();
+                    // 2. 이미지 피커 객체의 pickimage 메서드 호출
+                    XFile? xFile = await imagePicker.pickImage( // Null이 될 수 있는 xfile
+                      source: ImageSource.gallery); // 사진이 복사된 경로를 xfile에 저장
+                      print('경로: ${xFile?.path}');
+                  },
+                  child: Container(
+                    width: 100,
+                    height: 100,
+                    color: Colors.grey,
+                    child: const Icon(Icons.image),
+                    ),
+                ),
               ),
             ],
           ))),

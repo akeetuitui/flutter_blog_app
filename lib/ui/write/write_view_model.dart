@@ -48,6 +48,17 @@ class WriteViewModel extends AutoDisposeFamilyNotifier<WriteState, Post?> {
       return result;
     }
   }
+
+   void uploadImage() async{
+    // Firebase Storage 사용법
+    // 1. FirebaseStorage 객체 가지고 오기
+    // final storage = FirebaseStorage.instance;
+    // 2. 스토리치 참조 만들기
+    // Reference ref = storage.ref();
+    // 3. 파일 참조 만들기
+    // 4. 쓰기
+    // 5. 파일에 접근할 수 있는 URL 만들기
+  }
 }
 
 // 3. 뷰모델 관리자 만들기
