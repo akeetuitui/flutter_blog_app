@@ -17,7 +17,7 @@ class WriteState {
 class WriteViewModel extends AutoDisposeFamilyNotifier<WriteState, Post?> {
   @override
   WriteState build(Post? arg) {
-    return WriteState(false, null);
+    return WriteState(false, arg?.imageUrl);
   }
 
   Future<bool> insert({
