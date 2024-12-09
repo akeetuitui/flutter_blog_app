@@ -38,9 +38,10 @@ class _WritePageState extends ConsumerState<WritePage> {
   @override
   Widget build(BuildContext context) {
     final writeState = ref.watch(writeViewModelProvider(widget.post));
-    if (writeState.isWriting){
+    final vm = ref.read(writeViewModelProvider(widget.post).notifier);
+    if (writeState.isWriting) {
       return Scaffold(
-        appBar:  AppBar(),
+        appBar: AppBar(),
         body: Center(child: CircularProgressIndicator()),
       );
     }
@@ -54,19 +55,21 @@ class _WritePageState extends ConsumerState<WritePage> {
           appBar: AppBar(
             actions: [
               GestureDetector(
-                onTap: ()async{
+                onTap: () async {
                   print('완료 버튼 클릭'); // onTap 시에는 꼭 이런 형태의 출력문 넣기!
-                  final result = formKey.currentState?.validate() ?? false; // return이 불리언 타입 (모든 필드가 성공했을때)!
-                  if (result){
-                    final vm = ref.read(writeViewModelProvider(widget.post).notifier);
+                  final result = formKey.currentState?.validate() ??
+                      false; // return이 불리언 타입 (모든 필드가 성공했을때)!
+                  if (result) {
+                    final vm =
+                        ref.read(writeViewModelProvider(widget.post).notifier);
                     final insertResult = await vm.insert(
                       writer: writeController.text,
                       title: titleController.text,
                       content: contentController.text,
-                      );
-                      if (insertResult){
-                        Navigator.pop(context);
-                      }
+                    );
+                    if (insertResult) {
+                      Navigator.pop(context);
+                    }
                   }
                 },
                 child: Container(
@@ -86,74 +89,88 @@ class _WritePageState extends ConsumerState<WritePage> {
             ],
           ),
           body: Form(
-            key: formKey,
+              key: formKey,
               child: ListView(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            children: [
-              TextFormField(
-                controller: writeController,
-                textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(hintText: '작성자'),
-                validator: (value) {
-                  // trim: 문자열 앞 뒤로 공백 제거
-                  if(value?.trim().isEmpty ?? true) { // Null 일 때에 true로 넣어 null 일 때에도 문구가 나오도록!
-                    return '작성자를 입력해주세요';
-                  }
-                  return null; // 저 상황이 아니라면 유효성 검사 성공!
-                },
-              ),
-              TextFormField(
-                controller: titleController,
-                textInputAction: TextInputAction.done,
-                decoration: const InputDecoration(hintText: '제목'),
-                validator: (value) {
-                  // trim: 문자열 앞 뒤로 공백 제거
-                  if(value?.trim().isEmpty ?? true) { // Null 일 때에 true로 넣어 null 일 때에도 문구가 나오도록!
-                    return '제목을 입력해주세요';
-                  }
-                  return null; // 저 상황이 아니라면 유효성 검사 성공!
-                },
-              ),
-              SizedBox(
-                height: 200,
-                child: TextFormField(
-                  controller: contentController,
-                  maxLines: null, // 반드시 null로 할당 (개행할 때)
-                  expands: true, // sizedbox로 height설정 후 꼭 expands, 크기 늘릴 시 필수임!
-                  textInputAction: TextInputAction.newline, // 내용 입력 시 여러 줄 입력할 때 필요! (newline)
-                  decoration: const InputDecoration(hintText: '내용'),
-                  validator: (value) {
-                    // trim: 문자열 앞 뒤로 공백 제거
-                    if(value?.trim().isEmpty ?? true) { // Null 일 때에 true로 넣어 null 일 때에도 문구가 나오도록!
-                      return '내용을 입력해주세요';
-                    }
-                    return null; // 저 상황이 아니라면 유효성 검사 성공!
-                  },
-                ),
-              ),
-              const SizedBox(height: 20,),
-              Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () async{
-                    // 
-                    // 1. 이미지 피커 객체 생성
-                    ImagePicker imagePicker = ImagePicker();
-                    // 2. 이미지 피커 객체의 pickimage 메서드 호출
-                    XFile? xFile = await imagePicker.pickImage( // Null이 될 수 있는 xfile
-                      source: ImageSource.gallery); // 사진이 복사된 경로를 xfile에 저장
-                      print('경로: ${xFile?.path}');
-                  },
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    color: Colors.grey,
-                    child: const Icon(Icons.image),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                children: [
+                  TextFormField(
+                    controller: writeController,
+                    textInputAction: TextInputAction.done,
+                    decoration: const InputDecoration(hintText: '작성자'),
+                    validator: (value) {
+                      // trim: 문자열 앞 뒤로 공백 제거
+                      if (value?.trim().isEmpty ?? true) {
+                        // Null 일 때에 true로 넣어 null 일 때에도 문구가 나오도록!
+                        return '작성자를 입력해주세요';
+                      }
+                      return null; // 저 상황이 아니라면 유효성 검사 성공!
+                    },
+                  ),
+                  TextFormField(
+                    controller: titleController,
+                    textInputAction: TextInputAction.done,
+                    decoration: const InputDecoration(hintText: '제목'),
+                    validator: (value) {
+                      // trim: 문자열 앞 뒤로 공백 제거
+                      if (value?.trim().isEmpty ?? true) {
+                        // Null 일 때에 true로 넣어 null 일 때에도 문구가 나오도록!
+                        return '제목을 입력해주세요';
+                      }
+                      return null; // 저 상황이 아니라면 유효성 검사 성공!
+                    },
+                  ),
+                  SizedBox(
+                    height: 200,
+                    child: TextFormField(
+                      controller: contentController,
+                      maxLines: null, // 반드시 null로 할당 (개행할 때)
+                      expands:
+                          true, // sizedbox로 height설정 후 꼭 expands, 크기 늘릴 시 필수임!
+                      textInputAction: TextInputAction
+                          .newline, // 내용 입력 시 여러 줄 입력할 때 필요! (newline)
+                      decoration: const InputDecoration(hintText: '내용'),
+                      validator: (value) {
+                        // trim: 문자열 앞 뒤로 공백 제거
+                        if (value?.trim().isEmpty ?? true) {
+                          // Null 일 때에 true로 넣어 null 일 때에도 문구가 나오도록!
+                          return '내용을 입력해주세요';
+                        }
+                        return null; // 저 상황이 아니라면 유효성 검사 성공!
+                      },
                     ),
-                ),
-              ),
-            ],
-          ))),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () async {
+                        //
+                        // 1. 이미지 피커 객체 생성
+                        ImagePicker imagePicker = ImagePicker();
+                        // 2. 이미지 피커 객체의 pickimage 메서드 호출
+                        XFile? xFile = await imagePicker.pickImage(
+                            // Null이 될 수 있는 xfile
+                            source:
+                                ImageSource.gallery); // 사진이 복사된 경로를 xfile에 저장
+                        print('경로: ${xFile?.path}');
+                        if (xFile != null) {
+                          //
+                          vm.uploadImage(xFile);
+                        }
+                      },
+                      child: writeState.imageUrl == null? Container(
+                        width: 100,
+                        height: 100,
+                        color: Colors.grey,
+                        child: const Icon(Icons.image),
+                      )  :  SizedBox(height: 100,child: Image.network(writeState.imageUrl!),
+                      ),
+                    ),
+                  ),
+                ],
+              ))),
     );
   }
 }

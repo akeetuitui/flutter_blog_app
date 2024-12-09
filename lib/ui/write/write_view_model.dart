@@ -30,7 +30,7 @@ class WriteViewModel extends AutoDisposeFamilyNotifier<WriteState, Post?> {
     }
     final postRepository = PostRepository();
 
-    state = WriteState(true, null);
+    state = WriteState(true, state.imageUrl);
     if (arg == null) {
       // 포스트 객체가 널이면 : 새로작성
       final result = await postRepository.insert(
@@ -40,7 +40,7 @@ class WriteViewModel extends AutoDisposeFamilyNotifier<WriteState, Post?> {
         imageUrl: state.imageUrl!,
       );
       await Future.delayed(Duration(milliseconds: 500));
-      state = WriteState(false, null);
+      state = WriteState(false, state.imageUrl);
       return result;
     } else {
       // 널이 아니면 : 수정
